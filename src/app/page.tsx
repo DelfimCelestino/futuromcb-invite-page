@@ -17,7 +17,7 @@ import { Label } from "@/components/ui/label";
 import FloatingBubbles from "@/components/floating-bubbles";
 import { TopLeftShape, BottomRightShape } from "@/components/decorative-shapes";
 import { ModeToggle } from "@/components/mode-toggle";
-import Link from "next/link";
+// import Link from "next/link";
 
 export default function ParticipationForm() {
   const [isSuccess, setIsSuccess] = useState(false);
@@ -52,9 +52,9 @@ export default function ParticipationForm() {
     <div className="min-h-screen flex items-center justify-center p-4 bg-background transition-colors relative">
       <FloatingBubbles />
       <div className="absolute top-4 right-4 flex gap-2">
-        <Link href="/participantes">
+        {/* <Link href="/participantes">
           <Button variant="outline">Ver Participantes</Button>
-        </Link>
+        </Link> */}
         <ModeToggle />
       </div>
       <Card className="w-full max-w-3xl relative overflow-hidden border-primary/20">
