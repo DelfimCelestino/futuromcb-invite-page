@@ -33,10 +33,12 @@ export default function FloatingBubbles() {
 
     // Create initial bubbles
     const colors = [
-      "hsla(60, 100%, 50%, 0.2)", // amarelo
-      "hsla(120, 100%, 35%, 0.2)", // verde
-      "hsla(0, 100%, 50%, 0.2)", // vermelho
-      "hsla(0, 0%, 0%, 0.2)", // preto
+      "hsla(120, 100%, 35%, 0.3)", // verde
+      "hsla(0, 100%, 50%, 0.3)", // vermelho
+      "hsla(60, 100%, 50%, 0.3)", // amarelo
+      "hsla(120, 100%, 25%, 0.3)", // verde escuro
+      "hsla(0, 100%, 40%, 0.3)", // vermelho escuro
+      "hsla(60, 100%, 40%, 0.3)", // amarelo escuro
     ];
 
     for (let i = 0; i < 50; i++) {
