@@ -1,101 +1,190 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import type React from "react";
+import { useState } from "react";
+import confetti from "canvas-confetti";
+import { CalendarDays, Clock, MapPin } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import FloatingBubbles from "@/components/floating-bubbles";
+import { TopLeftShape, BottomRightShape } from "@/components/decorative-shapes";
+import { ModeToggle } from "@/components/mode-toggle";
+import Link from "next/link";
+
+export default function ParticipationForm() {
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    location: "",
+    contact: "",
+    business: "",
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 },
+    });
+    setIsSuccess(true);
+  };
+
+  const handleClose = () => {
+    setIsSuccess(false);
+    setFormData({
+      name: "",
+      location: "",
+      contact: "",
+      business: "",
+    });
+  };
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <div className="min-h-screen flex items-center justify-center p-4 bg-background transition-colors relative">
+      <FloatingBubbles />
+      <div className="absolute top-4 right-4 flex gap-2">
+        <Link href="/participantes">
+          <Button variant="outline">Ver Participantes</Button>
+        </Link>
+        <ModeToggle />
+      </div>
+      <Card className="w-full max-w-3xl relative overflow-hidden border-primary/20">
+        <TopLeftShape />
+        <BottomRightShape />
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        <CardHeader className="text-center space-y-6 pb-8">
+          <div className="space-y-2">
+            <h1 className="text-3xl font-bold text-primary">Mega Evento MCB</h1>
+            <p className="text-xl font-semibold text-foreground">
+              O Futuro é Agora
+            </p>
+          </div>
+
+          <div className="max-w-2xl mx-auto text-center space-y-6">
+            <p className="text-sm leading-relaxed text-muted-foreground">
+              O Futuro MCB é a instituição financeira que está a transformar
+              vidas no norte de Moçambique, tornando os serviços financeiros
+              acessíveis para todos, especialmente para micro e pequenas
+              empresas e agricultores.
+            </p>
+
+            <div className="space-y-2">
+              <h2 className="text-xl font-semibold text-foreground">
+                Você está Convidado!
+              </h2>
+              <p className="text-muted-foreground">
+                Junte-se a nós para um dia extraordinário de conexões,
+                oportunidades e celebração. Venha fazer parte desta jornada de
+                transformação e descobrir como podemos construir juntos um
+                futuro financeiro mais próspero.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex justify-center gap-6 flex-wrap text-muted-foreground">
+            <div className="flex items-center gap-2">
+              <CalendarDays className="h-5 w-5 text-primary" />
+              <span>15 de Março de 2025</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Clock className="h-5 w-5 text-primary" />
+              <span>09:00 - 17:00</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <MapPin className="h-5 w-5 text-primary" />
+              <span>Nampula - Pavilhão de Desportos</span>
+            </div>
+          </div>
+        </CardHeader>
+
+        <CardContent className="relative">
+          <div className="max-w-md mx-auto">
+            <h2 className="text-center text-lg font-semibold mb-6 text-foreground">
+              Confirme sua Participação
+            </h2>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="name">Nome</Label>
+                <Input
+                  id="name"
+                  required
+                  value={formData.name}
+                  onChange={(e) =>
+                    setFormData({ ...formData, name: e.target.value })
+                  }
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="location">Localização (Bairro)</Label>
+                <Input
+                  id="location"
+                  required
+                  value={formData.location}
+                  onChange={(e) =>
+                    setFormData({ ...formData, location: e.target.value })
+                  }
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="contact">Contacto</Label>
+                <Input
+                  id="contact"
+                  required
+                  maxLength={9}
+                  value={formData.contact}
+                  onChange={(e) =>
+                    setFormData({ ...formData, contact: e.target.value })
+                  }
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="business">Negócio (Opcional)</Label>
+                <Input
+                  id="business"
+                  value={formData.business}
+                  onChange={(e) =>
+                    setFormData({ ...formData, business: e.target.value })
+                  }
+                />
+              </div>
+              <Button type="submit" className="w-full">
+                Confirmar Participação
+              </Button>
+            </form>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Dialog open={isSuccess} onOpenChange={setIsSuccess}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-center">
+              Participação Confirmada!
+            </DialogTitle>
+          </DialogHeader>
+          <div className="text-center space-y-4">
+            <p className="text-muted-foreground">
+              Estamos muito felizes em ter você conosco neste evento especial!
+              Juntos, vamos construir um futuro financeiro mais inclusivo.
+            </p>
+            <p className="font-semibold text-foreground">
+              Nos vemos em 15 de Março de 2025!
+            </p>
+            <Button onClick={handleClose} className="w-full">
+              Fechar
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
