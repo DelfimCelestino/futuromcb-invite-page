@@ -141,6 +141,7 @@ export default function ParticipationForm() {
                   required
                   maxLength={9}
                   value={formData.contact}
+                  type="number"
                   onChange={(e) =>
                     setFormData({ ...formData, contact: e.target.value })
                   }
