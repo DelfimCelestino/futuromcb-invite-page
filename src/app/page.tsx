@@ -174,10 +174,11 @@ export default function ParticipationForm() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="business">Negócio (Opcional)</Label>
+                <Label htmlFor="business">Negócio</Label>
                 <Input
                   id="business"
                   value={formData.business}
+                  required
                   onChange={(e) =>
                     setFormData({ ...formData, business: e.target.value })
                   }
