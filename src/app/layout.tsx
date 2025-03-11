@@ -9,9 +9,9 @@ const robotoCondensed = Roboto_Condensed({
 });
 
 export const metadata: Metadata = {
-  title: "MCB - Mega Evento",
+  title: "Convite para ti.",
   description:
-    "Plataforma de inscrição para o Mega Evento MCB - O Futuro é Agora. Junte-se a nós para transformar o futuro financeiro do norte de Moçambique.",
+    "Confirme sua presença para o evento MCB - O Futuro é Agora. Junte-se a nós para transformar o futuro financeiro do norte de Moçambique.",
 };
 
 export default function RootLayout({
