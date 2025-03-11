@@ -42,7 +42,7 @@ export default function ParticipantsList() {
   const [participants, setParticipants] = useState<Participant[]>([]);
 
   // Expectativa estática de participantes
-  const expectedParticipants = 1000;
+  const expectedParticipants = 5000;
 
   // Filtrar e ordenar participantes
   const filteredAndSortedParticipants = participants
