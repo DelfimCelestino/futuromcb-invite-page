@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowUpDown, Search, FileSpreadsheet, FileDown } from "lucide-react";
 import { utils, writeFile } from "xlsx";
 import jsPDF from "jspdf";
@@ -16,6 +16,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import axios from "axios";
 
 // Tipo para os participantes
 interface Participant {
@@ -27,34 +28,14 @@ interface Participant {
   date: string;
 }
 
-// Dados de exemplo
-const mockParticipants: Participant[] = [
-  {
-    id: "1",
-    name: "João Silva",
-    location: "Muahivire",
-    contact: "840000001",
-    business: "Mercearia",
-    date: "2024-02-20",
-  },
-  {
-    id: "2",
-    name: "Ana Santos",
-    location: "Napipine",
-    contact: "850000002",
-    business: "Agricultura",
-    date: "2024-02-21",
-  },
-  // Adicione mais dados de exemplo conforme necessário
-];
-
 export default function ParticipantsList() {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [sortField, setSortField] = useState<"name" | "date">("date");
+  const [participants, setParticipants] = useState<Participant[]>([]);
 
   // Filtrar e ordenar participantes
-  const filteredAndSortedParticipants = mockParticipants
+  const filteredAndSortedParticipants = participants
     .filter((participant) =>
       participant.name.toLowerCase().includes(searchTerm.toLowerCase())
     )
@@ -78,6 +59,24 @@ export default function ParticipantsList() {
       setSortOrder("asc");
     }
   };
+
+  async function getParticipants() {
+    try {
+      const response = await axios.get(
+        process.env.NEXT_PUBLIC_API_URL + "/invites"
+      );
+      setParticipants(response.data);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error("Error fetching participants:", error);
+      }
+      console.error("Error fetching participants:", error);
+    }
+  }
+
+  useEffect(() => {
+    getParticipants();
+  }, []);
 
   const exportToExcel = () => {
     const ws = utils.json_to_sheet(
@@ -153,7 +152,7 @@ export default function ParticipantsList() {
           </div>
           <p className="text-muted-foreground">
             Total de participantes: {filteredAndSortedParticipants.length}
-            {searchTerm && ` (filtrados de ${mockParticipants.length})`}
+            {searchTerm && ` (filtrados de ${participants.length})`}
           </p>
         </CardHeader>
         <CardContent>

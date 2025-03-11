@@ -17,10 +17,12 @@ import { Label } from "@/components/ui/label";
 import FloatingBubbles from "@/components/floating-bubbles";
 import { TopLeftShape, BottomRightShape } from "@/components/decorative-shapes";
 import { ModeToggle } from "@/components/mode-toggle";
+import axios from "axios";
 // import Link from "next/link";
 
 export default function ParticipationForm() {
   const [isSuccess, setIsSuccess] = useState(false);
+  const [isLoading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     location: "",
@@ -28,14 +30,38 @@ export default function ParticipationForm() {
     business: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    confetti({
-      particleCount: 100,
-      spread: 70,
-      origin: { y: 0.6 },
-    });
-    setIsSuccess(true);
+
+    setLoading(true);
+
+    try {
+      const response = await axios.post(
+        process.env.NEXT_PUBLIC_API_URL + "/invites/create",
+        formData
+      );
+      console.log(response);
+
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+      });
+
+      setIsSuccess(true);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error("Error submitting form:", error);
+        alert("Ocorreu um erro ao enviar o formulário.");
+        setIsSuccess(false);
+      } else {
+        console.error("Error submitting form:", error);
+        alert("Ocorreu um erro ao enviar o formulário.");
+        setIsSuccess(false);
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleClose = () => {
@@ -157,8 +183,8 @@ export default function ParticipationForm() {
                   }
                 />
               </div>
-              <Button type="submit" className="w-full">
-                Confirmar Participação
+              <Button disabled={isLoading} type="submit" className="w-full">
+                {isLoading ? "Confirmando..." : "Confirmar Participação"}
               </Button>
             </form>
           </div>
