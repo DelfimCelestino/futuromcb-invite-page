@@ -14,11 +14,46 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import FloatingBubbles from "@/components/floating-bubbles";
 import { TopLeftShape, BottomRightShape } from "@/components/decorative-shapes";
 import { ModeToggle } from "@/components/mode-toggle";
 import axios from "axios";
-// import Link from "next/link";
+
+// Common neighborhoods in Nampula
+const neighborhoods = [
+  "Muahivire",
+  "Namicopo",
+  "Namutequeliua",
+  "Napipine",
+  "Carrupeia",
+  "Muhala",
+  "Muatala",
+  "Natikiri",
+  "Marrere",
+  "Central",
+  "Outro",
+];
+
+// Common business types
+const businessTypes = [
+  "Comerciante",
+  "Agricultor",
+  "Vendedor Ambulante",
+  "Carpinteiro",
+  "Mecânico",
+  "Costureiro",
+  "Cabeleireiro",
+  "Pescador",
+  "Motorista",
+  "Outro",
+];
 
 export default function ParticipationForm() {
   const [isSuccess, setIsSuccess] = useState(false);
@@ -52,12 +87,10 @@ export default function ParticipationForm() {
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error("Error submitting form:", error);
-        alert("Ocorreu um erro ao enviar o formulário.");
-        setIsSuccess(false);
+        alert("Ocorreu um erro ao enviar o formulário.");
       } else {
         console.error("Error submitting form:", error);
-        alert("Ocorreu um erro ao enviar o formulário.");
-        setIsSuccess(false);
+        alert("Ocorreu um erro ao enviar o formulário.");
       }
     } finally {
       setLoading(false);
@@ -78,9 +111,6 @@ export default function ParticipationForm() {
     <div className="min-h-screen flex items-center justify-center p-4 bg-background transition-colors relative">
       <FloatingBubbles />
       <div className="absolute top-4 right-4 flex gap-2">
-        {/* <Link href="/participantes">
-          <Button variant="outline">Ver Participantes</Button>
-        </Link> */}
         <ModeToggle />
       </div>
       <Card className="w-full max-w-3xl relative overflow-hidden border-primary/20">
@@ -127,7 +157,7 @@ export default function ParticipationForm() {
             </div>
             <div className="flex items-center gap-2">
               <MapPin className="h-5 w-5 text-primary" />
-              <span>Nampula - Pavilhão de Desportos</span>
+              <span>Nampula - Pavilhão de Desportos</span>
             </div>
           </div>
         </CardHeader>
@@ -151,14 +181,23 @@ export default function ParticipationForm() {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="location">Localização (Bairro)</Label>
-                <Input
-                  id="location"
-                  required
+                <Select
                   value={formData.location}
-                  onChange={(e) =>
-                    setFormData({ ...formData, location: e.target.value })
+                  onValueChange={(value) =>
+                    setFormData({ ...formData, location: value })
                   }
-                />
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Selecione o bairro" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {neighborhoods.map((neighborhood) => (
+                      <SelectItem key={neighborhood} value={neighborhood}>
+                        {neighborhood}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="contact">Contacto</Label>
@@ -175,14 +214,23 @@ export default function ParticipationForm() {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="business">Negócio</Label>
-                <Input
-                  id="business"
+                <Select
                   value={formData.business}
-                  required
-                  onChange={(e) =>
-                    setFormData({ ...formData, business: e.target.value })
+                  onValueChange={(value) =>
+                    setFormData({ ...formData, business: value })
                   }
-                />
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Selecione o tipo de negócio" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {businessTypes.map((businessType) => (
+                      <SelectItem key={businessType} value={businessType}>
+                        {businessType}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
               <Button disabled={isLoading} type="submit" className="w-full">
                 {isLoading ? "Confirmando..." : "Confirmar Participação"}
