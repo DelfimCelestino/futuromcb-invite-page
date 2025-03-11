@@ -444,8 +444,6 @@ function ParticipantsComparisonChart({
 
       // Calcular escala para valores muito grandes
       const scale = maxValue > 10000 ? 1000 : maxValue > 1000 ? 100 : 1;
-      const scaledExpected = expected / scale;
-      const scaledActual = actual / scale;
       const scaleText = scale > 1 ? ` (x${scale})` : "";
 
       // Desenhar barras
