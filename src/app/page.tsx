@@ -61,8 +61,10 @@ export default function ParticipationForm() {
   const [formData, setFormData] = useState({
     name: "",
     location: "",
+    locationOther: "",
     contact: "",
     business: "",
+    businessOther: "",
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -70,10 +72,24 @@ export default function ParticipationForm() {
 
     setLoading(true);
 
+    // Preparar os dados para envio
+    const submitData = {
+      name: formData.name,
+      location:
+        formData.location === "Outro"
+          ? formData.locationOther
+          : formData.location,
+      contact: formData.contact,
+      business:
+        formData.business === "Outro"
+          ? formData.businessOther
+          : formData.business,
+    };
+
     try {
       const response = await axios.post(
         process.env.NEXT_PUBLIC_API_URL + "/invites/create",
-        formData
+        submitData
       );
       console.log(response);
 
@@ -102,8 +118,10 @@ export default function ParticipationForm() {
     setFormData({
       name: "",
       location: "",
+      locationOther: "",
       contact: "",
       business: "",
+      businessOther: "",
     });
   };
 
@@ -184,7 +202,12 @@ export default function ParticipationForm() {
                 <Select
                   value={formData.location}
                   onValueChange={(value) =>
-                    setFormData({ ...formData, location: value })
+                    setFormData({
+                      ...formData,
+                      location: value,
+                      locationOther:
+                        value !== "Outro" ? "" : formData.locationOther,
+                    })
                   }
                 >
                   <SelectTrigger className="w-full">
@@ -198,6 +221,19 @@ export default function ParticipationForm() {
                     ))}
                   </SelectContent>
                 </Select>
+                {formData.location === "Outro" && (
+                  <Input
+                    placeholder="Especifique o bairro"
+                    value={formData.locationOther}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        locationOther: e.target.value,
+                      })
+                    }
+                    required
+                  />
+                )}
               </div>
               <div className="space-y-2">
                 <Label htmlFor="contact">Contacto</Label>
@@ -217,7 +253,12 @@ export default function ParticipationForm() {
                 <Select
                   value={formData.business}
                   onValueChange={(value) =>
-                    setFormData({ ...formData, business: value })
+                    setFormData({
+                      ...formData,
+                      business: value,
+                      businessOther:
+                        value !== "Outro" ? "" : formData.businessOther,
+                    })
                   }
                 >
                   <SelectTrigger className="w-full">
@@ -231,6 +272,19 @@ export default function ParticipationForm() {
                     ))}
                   </SelectContent>
                 </Select>
+                {formData.business === "Outro" && (
+                  <Input
+                    placeholder="Especifique o negócio"
+                    value={formData.businessOther}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        businessOther: e.target.value,
+                      })
+                    }
+                    required
+                  />
+                )}
               </div>
               <Button disabled={isLoading} type="submit" className="w-full">
                 {isLoading ? "Confirmando..." : "Confirmar Participação"}
